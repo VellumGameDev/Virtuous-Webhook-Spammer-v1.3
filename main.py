@@ -45,7 +45,7 @@ def get_avatar_url(avatarurl=None):
     if not re.match(r'^https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|bmp|tiff)$', avatarurl, re.IGNORECASE):
         print("\n" * 1)
         print(f"{RED}[!] Invalid Avatar URL provided. Must end in a valid image extension (.png, .jpg, etc.).{RESET}")
-        return None
+        return default_avatar_url
     return avatarurl
 
 clear_screen()
