@@ -11,7 +11,8 @@ if %errorlevel% neq 0 (
 
 :: Install the required packages
 echo Installing required packages...
-pip install --upgrade pip
-pip install requests
+python -m pip install --upgrade pip
+python -m pip install requests
+python -m pip install pystyle
 
 pause
