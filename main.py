@@ -49,7 +49,7 @@ def get_avatar_url(avatarurl=None):
     return avatarurl
 
 clear_screen()
-set_console_title("Virtuous@WebhookSpammer")
+set_console_title("Virtuous|Vellum@WebhookSpammer")
 
 banner_art = r"""
 
@@ -63,7 +63,7 @@ banner_art = r"""
                                     Made by Virtuous.m2k & Vellum__
                                        Educational Purposes Only
                                     https://discord.gg/virtuoustools
-                                         Current Version: 1.4
+                                         Current Version: 1.5.0
 """
 Slow(Colorate.Horizontal(Colors.purple_to_blue, banner_art, 1))
 
@@ -85,25 +85,26 @@ def send_webhook_message(webhook_url, message, username, avatarurl):
     except requests.exceptions.RequestException as e:
         print(f"{RED}An error occurred: {str(e)}{RESET}")
 
-
 def main():
+    print(f"{PURPLE}[1] Send Normal Message{RESET}")
+    print(f"{PURPLE}[2] Send Embed Message{RESET}")
+
+    choice = input(f"\n[?]{PURPLE} Choose an option (1/2) >>> {RESET}")
+
+    if choice not in ['1', '2']:
+        print(f"{RED}[-] Invalid choice. Please enter 1 or 2.{RESET}")
+        return
+
     webhook_url = input(f"[?]{PURPLE} Enter Webhook URL >>> {RESET}")
     print("\n" * 1)
     username = input(f"[?]{PURPLE} Name (OPTIONAL) >>> {RESET}")
     print("\n" * 1)
     avatarurl = input(f"[?]{PURPLE} Avatar URL (OPTIONAL) >>> {RESET}")
     print("\n" * 1)
-    message = input(f"[?]{PURPLE} Message >>> {RESET}")
 
     if not webhook_url:
         print("\n" * 1)
         print(f"{RED}[!] Webhook URL is required!{RESET}")
-        return
-    print("\n" * 1)
-
-    if not message:
-        print("\n" * 1)
-        print(f"{RED}[!] Message is required!{RESET}")
         return
     print("\n" * 1)
 
@@ -129,14 +130,26 @@ def main():
         print(f"{RED}[-] Invalid input! Please enter a valid number.{RESET}")
         return
 
+    delay = 0.05
 
-    delay = 0.05  
+    if choice == '1':
+        # Normal message path
+        message = input(f"[?]{PURPLE} Message >>> {RESET}")
+        if not message:
+            print(f"{RED}[!] Message is required!{RESET}")
+            return
+        print("\n" * 1)
 
-    for i in range(iterations):
-        send_webhook_message(webhook_url, message, username, avatarurl)
-        if i < iterations - 1: 
-            time.sleep(delay)
+        for i in range(iterations):
+            send_webhook_message(webhook_url, message, username, avatarurl)
+            if i < iterations - 1:
+                time.sleep(delay)
 
+    elif choice == '2':
+        # Embed message path
+        print(f"{GREY}[i] You selected to send an Embed message. Implementing now...{RESET}")
+        # Replace the line below with your own function that handles embeds
+        send_embed_message(webhook_url, username, avatarurl)
 
 if __name__ == "__main__":
     main()
