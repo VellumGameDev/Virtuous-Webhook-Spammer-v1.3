@@ -227,7 +227,7 @@ def main():
                 delay = random.uniform(min_delay, max_delay)
                 time.sleep(delay)
 
-        print("\n")
+        print()
 
     elif choice == '2':
         title = input(f"[?]{PURPLE} Embed Title >>> {RESET}")
@@ -311,7 +311,7 @@ def main():
                 delay = random.uniform(min_delay, max_delay)
                 time.sleep(delay)
 
-        print("\n")
+        print()
 
 if __name__ == "__main__":
     main()
