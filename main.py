@@ -124,6 +124,8 @@ def main():
         print(f"{GREEN}[!] Using Avatar: {avatarurl}!{RESET}")
     print("\n" * 1)
 
+    # TODO: Maybe make a multi webhook tool
+
     if choice == '1':
         message = input(f"[?]{PURPLE} Message >>> {RESET}")
         if not message:
@@ -164,7 +166,7 @@ def main():
             return
 
         default_footer = "Sent via Virtuous Webhook Spammer 1.5 | .gg/virtuoustools"
-        default_color = 8323327 # Default Color
+        default_color = 8323327
 
         # TODO: Add more input stuff for own color.
 
