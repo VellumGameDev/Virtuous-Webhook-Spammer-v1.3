@@ -39,7 +39,7 @@ def get_avatar_url(avatarurl=None):
 
     if not avatarurl:
         print("\n" * 1)
-        print(f"{GREEN}[!] No Avatar URL given, using default Virtuous Avatar.{RESET}")
+        print(f"{GREEN}[!] No Avatar URL given, using default {PURPLE}Virtuous{GREEN} Avatar.{RESET}")
         return default_avatar_url
 
     if not re.match(r'^https?:\/\/.*\.(?:png|jpg|jpeg|gif|webp|bmp|tiff)$', avatarurl, re.IGNORECASE):
@@ -49,7 +49,7 @@ def get_avatar_url(avatarurl=None):
     return avatarurl
 
 clear_screen()
-set_console_title("Virtuous|Vellum@WebhookSpammer")
+set_console_title("VirtuousVellum@WebhookSpammer")
 
 banner_art = r"""
 
@@ -63,7 +63,10 @@ banner_art = r"""
                                     Made by Virtuous.m2k & Vellum__
                                        Educational Purposes Only
                                     https://discord.gg/virtuoustools
-                                         Current Version: 1.5.0
+                                         Current Version: 1.5
+
+                                        [1] Send Normal Message
+                                        [2] Send Embed Message
 """
 Slow(Colorate.Horizontal(Colors.purple_to_blue, banner_art, 1))
 
@@ -78,17 +81,16 @@ def send_webhook_message(webhook_url, message, username, avatarurl):
         response = requests.post(webhook_url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
 
         if response.status_code == 204:
-            print(f"{GREEN}[+] Message sent successfully!{RESET}")
+            print(f"{GREEN}[+] Text sent successfully!{RESET}")
+        elif response.status_code == 429:
+            print(f"{RED}[-] Rate Limited.")
         else:
-            print(f"{RED}[-] Rate Limited. Status Code: {response.status_code}{RESET}")
+            print(f"{RED}[-] Failed. Status Code: {response.status_code}{RESET}")
 
     except requests.exceptions.RequestException as e:
         print(f"{RED}An error occurred: {str(e)}{RESET}")
 
 def main():
-    print(f"{PURPLE}[1] Send Normal Message{RESET}")
-    print(f"{PURPLE}[2] Send Embed Message{RESET}")
-
     choice = input(f"\n[?]{PURPLE} Choose an option (1/2) >>> {RESET}")
 
     if choice not in ['1', '2']:
@@ -110,8 +112,8 @@ def main():
 
     if not username:
         print("\n" * 1)
-        print(f"{GREEN}[!] No Name given, using default virtuous name.{RESET}")
-        username = "Virtuous Webhook Spammer 1.4 | .gg/virtuoustools"
+        print(f"{GREEN}[!] No Name given, using default {PURPLE}Virtuous{GREEN} Name.{RESET}")
+        username = "Virtuous Webhook Spammer 1.5 | .gg/virtuoustools"
     print("\n" * 1)
 
     avatarurl = get_avatar_url(avatarurl)
@@ -121,35 +123,92 @@ def main():
         print(f"{GREEN}[!] Using Avatar: {avatarurl}!{RESET}")
     print("\n" * 1)
 
-    try:
-        iterations = int(input(f"[?]{PURPLE} Iterations >>> {RESET}"))
-        if iterations <= 0:
-            print(f"{RED}[!] Please enter a positive number for iterations.{RESET}")
-            return
-    except ValueError:
-        print(f"{RED}[-] Invalid input! Please enter a valid number.{RESET}")
-        return
-
-    delay = 0.05
-
     if choice == '1':
-        # Normal message path
         message = input(f"[?]{PURPLE} Message >>> {RESET}")
         if not message:
             print(f"{RED}[!] Message is required!{RESET}")
             return
         print("\n" * 1)
 
+        custom_prefix = "Virtuous Webhook Spammer 1.5 | .gg/virtuoustools "
+        full_message = f"{message}\n\n{custom_prefix}"
+        message = full_message
+
+        try:
+            iterations = int(input(f"[?]{PURPLE} Iterations >>> {RESET}"))
+            if iterations <= 0:
+                print(f"{RED}[!] Please enter a positive number for iterations.{RESET}")
+                return
+        except ValueError:
+            print(f"{RED}[-] Invalid input! Please enter a valid number.{RESET}")
+            return
+
+        delay = 0.05
+
         for i in range(iterations):
             send_webhook_message(webhook_url, message, username, avatarurl)
+
             if i < iterations - 1:
                 time.sleep(delay)
 
     elif choice == '2':
-        # Embed message path
-        print(f"{GREY}[i] You selected to send an Embed message. Implementing now...{RESET}")
-        # Replace the line below with your own function that handles embeds
-        send_embed_message(webhook_url, username, avatarurl)
+        title = input(f"[?]{PURPLE} Embed Title >>> {RESET}")
+        if not title:
+            print(f"{RED}[!] Title is required for embeds!{RESET}")
+            return
+
+        description = input(f"[?]{PURPLE} Embed Description >>> {RESET}")
+        if not description:
+            print(f"{RED}[!] Description is required for embeds!{RESET}")
+            return
+
+        default_footer = "Sent via Virtuous Webhook Spammer 1.5 | .gg/virtuoustools"
+        default_color = 8323327 # Default Color
+
+        # TODO: Add more input stuff for own color.
+
+        embed_data = {
+            "embeds": [
+                {
+                    "title": title,
+                    "description": description,
+                    "footer": {
+                        "text": default_footer
+                    },
+                    "color": default_color,
+                }
+            ],
+            "username": username,
+            "avatar_url": avatarurl,
+        }
+
+        try:
+            iterations = int(input(f"[?]{PURPLE} Iterations >>> {RESET}"))
+            if iterations <= 0:
+                print(f"{RED}[!] Please enter a positive number for iterations.{RESET}")
+                return
+        except ValueError:
+            print(f"{RED}[-] Invalid input! Please enter a valid number.{RESET}")
+            return
+
+        delay = 0.05
+
+        for i in range(iterations):
+            response = requests.post(
+                webhook_url,
+                data=json.dumps(embed_data),
+                headers={'Content-Type': 'application/json'}
+            )
+
+            if response.status_code == 204:
+                print(f"{GREEN}[+] Embed sent successfully!{RESET}")
+            elif response.status_code == 429:
+                print(f"{RED}[-] Rate Limited.")
+            else:
+                print(f"{RED}[-] Failed. Status Code: {response.status_code}{RESET}")
+
+            if i < iterations - 1:
+                time.sleep(delay)
 
 if __name__ == "__main__":
     main()
