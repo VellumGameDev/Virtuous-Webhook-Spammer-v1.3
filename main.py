@@ -7,7 +7,6 @@ import re
 
 from        pystyle         import      Write, Colors, Colorate
 
-# Manual Colors
 RED = '\033[91m'
 GREEN = '\033[92m'
 GREY = '\033[90m'
@@ -50,6 +49,8 @@ def get_avatar_url(avatarurl=None):
 
 clear_screen()
 set_console_title("VirtuousVellum@WebhookSpammer")
+
+# TODO: Move away from Command Prompt and move to a real GUI
 
 banner_art = r"""
 
