@@ -6,6 +6,5 @@ The owner is not responsible for the users actions.
 
 Make sure to have Python 3.x (any python 3 version e.g. 3.11)
 
-version: v1.4
+version: v1.7
 Discord: https://discord.gg/virtuoustools
-Youtube: https://www.youtube.com/@Virtuous-m2k
